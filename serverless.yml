@@ -22,7 +22,7 @@ functions:
     environment:
       BUCKET: ${self:custom.bucket}
     events:
-      - schedule: cron(00 16 * * MON-FRI *)
+      - schedule: cron(0 03 ? * MON-FRI *)
         input:
           data_url: "https://courttribunalfinder.service.gov.uk/courts.json"
-          key: "courts.json"
+          key_suffix: "courts.json"

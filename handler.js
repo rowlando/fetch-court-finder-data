@@ -24,7 +24,7 @@ module.exports.save = (event, context, callback) => {
       s3
         .putObject({
           Bucket: process.env.BUCKET,
-          Key: new Date().toISOString().split("T")[0] + "-" + event.key,
+          Key: new Date().toISOString().split("T")[0] + "-" + event.key_suffix,
           Body: buffer
         })
         .promise()

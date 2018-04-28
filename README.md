@@ -3,13 +3,9 @@ title: AWS Fetch image from URL and upload to S3 example in NodeJS
 description: This example display how to fetch an image from remote source (URL) and then upload this image to a S3 bucket.
 layout: Doc
 -->
-# Fetch image from URL then upload to s3 Example
+# Fetch court data from URL then upload to s3 Example
 
-This example display how to fetch an image from remote source (URL) and then upload this image to a S3 bucket.
-
-## Use-cases
-
-- Store a user's profile picture from another service.
+This function fetches data from court finder and upload the data to a S3 bucket. The `serverless.yaml` specifies when the function runs, the data URL and the key suffix to use when saving the data. 
 
 ## How it works
 
@@ -28,13 +24,7 @@ fetch('image URL')
 
 ## Setup
 
-Since this plugin uses the Serverless plugin `serverless-secrets-plugin` you need to setup the `node_modules` by running:
-
-```bash
-npm install
-```
-
-In addition you need to create an S3 bucket you want to store the files in. After you created the bucket add change the bucket name in `serverless.yml` custom settings to your buckets.
+You need to create an S3 bucket you want to store the files in. After you created the bucket, change the bucket name in `serverless.yml` custom settings to your buckets.
 
 ```yml
 custom:
@@ -43,37 +33,10 @@ custom:
 
 ## Deploy
 
-In order to deploy the you endpoint simply run
+In order to deploy your endpoint simply run
 
 ```bash
 serverless deploy
-```
-
-The expected result should be similar to:
-
-```bash
-Serverless: Creating Stack...
-Serverless: Checking Stack create progress...
-.....
-Serverless: Stack create finished...
-Serverless: Packaging service...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (1.8 KB)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-................
-Serverless: Stack update finished...
-
-Service Information
-service: aws-node-fetch-file-and-store-in-s3
-stage: dev
-region: us-west-1
-api keys:
-  None
-endpoints:
-  None
-functions:
-  aws-node-fetch-file-and-store-in-s3-dev-save: arn:aws:lambda:us-west-1:377024778620:function:aws-node-fetch-file-and-store-in-s3-dev-save
 ```
 
 ## Usage
@@ -81,17 +44,19 @@ functions:
 You can now send an HTTP request directly to the endpoint using a tool like curl
 
 ```bash
-serverless invoke --function save --log --data='{ "image_url": "https://assets-cdn.github.com/images/modules/open_graph/github-mark.png", "key": "github.png"}'
+serverless invoke --function save --log --data='{ "data_url": "https://courttribunalfinder.service.gov.uk/courts.json", "key_suffix": "court.json"}'
 ```
 
 The expected result should be similar to:
 
 ```bash
-"Saved"
+{
+    "ETag": "\"1fc0f55f4c7832dc60f0b3bb9f496db5\""
+}
 --------------------------------------------------------------------
-START RequestId: c658859d-bd42-11e6-ac1f-c7a7ee5bd7f3 Version: $LATEST
-END RequestId: c658859d-bd42-11e6-ac1f-c7a7ee5bd7f3
-REPORT RequestId: c658859d-bd42-11e6-ac1f-c7a7ee5bd7f3	Duration: 436.94 ms	Billed Duration: 500 ms 	Memory Size: 1024 MB	Max Memory Used: 29 MB
+START RequestId: 53075ac4-4aef-11e8-b974-e5a83c9209d3 Version: $LATEST
+END RequestId: 53075ac4-4aef-11e8-b974-e5a83c9209d3
+REPORT RequestId: 53075ac4-4aef-11e8-b974-e5a83c9209d3  Duration: 352.59 ms     Billed Duration: 400 ms         Memory Size: 1024 MB    Max Memory Used: 52 MB
 ```
 
 ## Scaling
